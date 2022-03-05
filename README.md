@@ -107,6 +107,51 @@ admin.site.register(CustomUser, CustomUserAdmin)
 py manage.py runserver
 ```
 
+# シリアライザの作成
+
+`authentication/serializers.py`
+
+```py
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+
+        token['fav_color'] = user.fav_color
+        return token
+```
+
+`authentication/urls.py`(Django REST Frameworkのルーティング設定を行う)
+
+```py
+from django.urls import path
+from rest_framework_simplejwt import views as jwt_views
+from .views import ObtainTokenPairWithColorView
+
+# JWT認証を行うためのURLをここで新規作成
+urlpatterns = [
+    path('token/obtain/', ObtainTokenPairWithColorView.as_view(), name='token_create'),
+    path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+]
+```
+
+`authentication/views.py`(Viewの設定を行う)
+
+```py
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import permissions
+from .serializers import MyTokenObtainPairSerializer
+
+
+class ObtainTokenPairWithColorView(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
+```
+
 # 開発環境
 
 * Python 3.10.1
