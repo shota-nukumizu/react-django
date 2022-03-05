@@ -239,6 +239,57 @@ class CustomUserCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
 
+# Hello Worldを表示するViewの作成
+
+`authenticaton/views.py`
+
+```py
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer
+
+
+class ObtainTokenPairWithColorView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+class CustomUserCreate(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format='json'):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# 新規で作成。HTTPリクエストを介して行われるので、statusを追加の引数でつけておく。
+class HelloWorldView(APIView):
+
+    def get(self, request):
+        return Response(data={"hello":"world"}, status=status.HTTP_200_OK)
+```
+
+`authentication/urls.py`
+
+```py
+from django.urls import path
+from rest_framework_simplejwt import views as jwt_views
+from .views import HelloWorldView, ObtainTokenPairWithColorView, CustomUserCreate
+
+urlpatterns = [
+    path('user/create/', CustomUserCreate.as_view(), name='create_user'),
+    path('token/obtain/', ObtainTokenPairWithColorView.as_view(), name='token_create'),
+    path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('hello/', HelloWorldView.as_view(), name='hello_world'), #新規で追加。ViewはURLのルーティングに都度追加しないと反映されないのでご用心
+]
+```
+
 # 開発環境
 
 * Python 3.10.1
