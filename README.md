@@ -101,7 +101,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 ```
 
-以下のコマンドを入力して、`localhost:5000/admin`にアクセスすれば管理サイトへアクセスできる
+以下のコマンドを入力して、`localhost:8000/admin`にアクセスすれば管理サイトへアクセスできる
 
 ```
 py manage.py runserver
