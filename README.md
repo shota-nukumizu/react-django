@@ -84,6 +84,29 @@ py manage.py migrate
 py manage.py createsuperuser
 ```
 
+# 管理サイトへの登録
+
+作成したModelを管理サイトへ登録する。
+
+`authentication/admin.py`
+
+```py
+from django.contrib import admin
+from .models import CustomUser
+
+
+class CustomUserAdmin(admin.ModelAdmin):
+    model = CustomUser
+
+admin.site.register(CustomUser, CustomUserAdmin)
+```
+
+以下のコマンドを入力して、`localhost:5000/admin`にアクセスすれば管理サイトへアクセスできる
+
+```
+py manage.py runserver
+```
+
 # 開発環境
 
 * Python 3.10.1
