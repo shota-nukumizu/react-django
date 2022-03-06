@@ -290,6 +290,18 @@ urlpatterns = [
 ]
 ```
 
+最後に、プロジェクト本体のルーティングに対応するための実装を`backend/urls.py`に書く。**これがないとアプリケーションが正常に動作しないので要注意。**(ルーティングをひとまとめにする場合は別だが)
+
+```py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('authentication.urls')),
+]
+```
+
 # 開発環境
 
 * Python 3.10.1
