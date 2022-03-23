@@ -302,6 +302,14 @@ urlpatterns = [
 ]
 ```
 
+# React
+
+## インストール
+
+```powershell
+npx create-react-app my-app
+```
+
 # 開発環境
 
 * Python 3.10.1
