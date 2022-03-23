@@ -307,7 +307,7 @@ urlpatterns = [
 ## インストール
 
 ```powershell
-npx create-react-app my-app
+\> npx create-react-app --template typescript frontend
 ```
 
 # 開発環境
