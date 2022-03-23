@@ -306,9 +306,26 @@ urlpatterns = [
 
 ## インストール
 
+以下のコマンドでReact✕TypeScriptのプログラムをインストールする。
+
 ```powershell
 \> npx create-react-app --template typescript frontend
 ```
+
+## 開発者サーバの立ち上げ
+
+```powershell
+\> cd frontend
+\> npm start
+```
+
+## yarnのインストールとaxios
+
+```powershell
+\> yarn
+\> yarn axios
+```
+
 
 # 開発環境
 
